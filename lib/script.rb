@@ -1,4 +1,5 @@
-file = File.open('../words.txt')
-words = file.readlines.map(&:chomp).select { |word| word.length.between?(5,12) }
-puts words[rand(0...words.length)]
-file.close
+# frozen_string_literal: true
+
+require_relative 'game'
+
+Game.new.play
