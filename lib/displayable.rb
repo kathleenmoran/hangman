@@ -11,7 +11,7 @@ module Displayable
   end
 
   def print_start_game_message(word_length)
-    puts "Your random word has been chosen, it has #{word_length} letters:"
+    puts "\nYour random word has been chosen, it has #{word_length} letters:"
   end
 
   def print_already_guessed_message(letters)
