@@ -3,12 +3,10 @@
 require_relative 'word'
 require_relative 'player'
 require_relative 'displayable'
-require_relative 'serializable'
 require 'yaml'
 
 # a game of hangman
 class Game
-  include Serializable
   include Displayable
   MIN_WORD_LENGTH = 5
   MAX_WORD_LENGTH = 12
@@ -39,14 +37,19 @@ class Game
     puts "\n#{@word.to_s_with_blanks(@player.prev_guesses)}\n\n"
     print_already_guessed_message(@player.prev_guesses_to_s) if @player.made_wrong_guess?
     guess = @player.make_guess
+    update_requests(guess)
+    if @word.wrong_guess?(guess.value) && !guess.request?
+      print_incorrect_guess_message(guess.value)
+      @guesses_left -= 1
+      print_guesses_left_message(@guesses_left) if @guesses_left.positive?
+    end
+  end
+
+  def update_requests(guess)
     if guess.save_request?
       @save_request_made = true
     elsif guess.exit_request?
       @exit_request_made = true
-    elsif @word.wrong_guess?(guess.value)
-      print_incorrect_guess_message(guess.value)
-      @guesses_left -= 1
-      print_guesses_left_message(@guesses_left) if @guesses_left.positive?
     end
   end
 
@@ -61,15 +64,20 @@ class Game
         break
       end
     end
-    unless @save_request_made && @exit_request_made
+    print_end_of_game_message
+  end
+
+  def print_end_of_game_message
+    if !@save_request_made && !@exit_request_made
       @is_won ? print_won_game_message(@guesses_left) : @word.lost_game
     end
+    @exit_request_made = false
   end
 
   def save(file_name)
     file = File.open(file_name, 'w')
     file.puts YAML.dump(self)
     file.close
-    puts "Your game is now saved. The name of the game's file is: #{file_name}"
+    @save_request_made = false
   end
 end

@@ -1,0 +1,19 @@
+--- !ruby/object:Game
+word: !ruby/object:Word
+  value: cooking
+player: !ruby/object:Player
+  prev_guesses: !ruby/object:Set
+    hash:
+      ? !ruby/object:Guess
+        value: a
+      : true
+      ? !ruby/object:Guess
+        value: b
+      : true
+      ? !ruby/object:Guess
+        value: c
+      : true
+guesses_left: 6
+is_won: false
+exit_request_made: false
+save_request_made: false

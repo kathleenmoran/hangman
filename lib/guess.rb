@@ -31,4 +31,8 @@ class Guess
   def exit_request?
     @value.downcase == 'exit'
   end
+
+  def request?
+    save_request? || exit_request?
+  end
 end
