@@ -11,7 +11,7 @@ class Game
   MIN_WORD_LENGTH = 5
   MAX_WORD_LENGTH = 12
   FILE_NAME = '../words.txt'
-  attr_accessor :save_request_made
+  attr_reader :save_request_made
 
   def initialize(incorrect_guesses = 8)
     @word = generate_random_word
