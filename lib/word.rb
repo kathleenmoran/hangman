@@ -29,7 +29,7 @@ class Word
     print_lost_game_message(@value)
   end
 
-  def correct_guess?(guess)
-    @value.include?(guess)
+  def wrong_guess?(guess)
+    !@value.include?(guess)
   end
 end

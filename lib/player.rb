@@ -16,7 +16,9 @@ class Player
   def make_guess
     print_guess_prompt
     guess = Guess.new(gets.chomp)
-    if guess.valid? && !@prev_guesses.include?(guess)
+    if guess.save_request? || guess.exit_request?
+      guess
+    elsif guess.valid? && !@prev_guesses.include?(guess)
       @prev_guesses << guess
       guess
     else

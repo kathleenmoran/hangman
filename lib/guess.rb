@@ -8,10 +8,6 @@ class Guess
     @value = value.downcase
   end
 
-  def ==(other)
-    @value == other.value
-  end
-
   def eql?(other)
     @value == other.value
   end
@@ -25,6 +21,14 @@ class Guess
   end
 
   def valid?
-    value.length == 1 && value.match(/[a-z]/)
+    @value.length == 1 && @value.match(/[a-z]/)
+  end
+
+  def save_request?
+    @value.downcase == 'save'
+  end
+
+  def exit_request?
+    @value.downcase == 'exit'
   end
 end
