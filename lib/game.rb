@@ -22,6 +22,22 @@ class Game
     @save_request_made = false
   end
 
+  def play
+    start_game
+    while @guesses_left.positive?
+      play_round
+      break if @save_request_made || @exit_request_made
+
+      if @word.guessed?(@player.prev_guesses)
+        @is_won = true
+        break
+      end
+    end
+    print_end_of_game_message
+  end
+
+  private
+
   def generate_random_word
     file = File.open(FILE_NAME)
     words = file.readlines.map(&:chomp).select { |word| word.length.between?(MIN_WORD_LENGTH, MAX_WORD_LENGTH) }
@@ -51,20 +67,6 @@ class Game
     elsif guess.exit_request?
       @exit_request_made = true
     end
-  end
-
-  def play
-    start_game
-    while @guesses_left.positive?
-      play_round
-      break if @save_request_made || @exit_request_made
-
-      if @word.guessed?(@player.prev_guesses)
-        @is_won = true
-        break
-      end
-    end
-    print_end_of_game_message
   end
 
   def print_end_of_game_message
